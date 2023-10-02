@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\UserAuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,4 +26,8 @@ Route::group(["prefix" => "/auth"], function () {
     Route::group(["middleware" => "auth:api"], function () {
         Route::get("/logout", [UserAuthController::class, 'logout'])->name("user.logout");
     });
+});
+
+Route::group(["middleware" => "auth:api"], function () {
+    Route::apiResource("/user", UserController::class);
 });
