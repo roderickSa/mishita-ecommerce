@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customer_addresses', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId("user_id")->primary()->constrained()->onDelete("cascade");
             $table->string('type', 45);
             $table->string('address', 255);
             $table->foreignId('district_id')->constrained()->onDelete("cascade");
-            $table->foreignId('customer_id')->constrained()->onDelete("cascade");
             $table->timestamps();
         });
     }
