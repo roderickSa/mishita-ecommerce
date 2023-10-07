@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,4 +34,6 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::apiResource("/user", UserController::class);
 
     Route::apiResource("/category", CategoryController::class);
+
+    Route::apiResource("/district", DistrictController::class);
 });
