@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 55)->unique();
-            $table->string("slug", 110)->unique()->index();
+            $table->string("name", 55)->unique()->index();
+            $table->string("slug", 110)->unique();
             $table->foreignIdFor(User::class, "created_by");
             $table->foreignIdFor(User::class, "updated_by");
             $table->timestamps();

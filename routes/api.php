@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +37,14 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::apiResource("/category", CategoryController::class);
 
     Route::apiResource("/district", DistrictController::class);
+
+    Route::group(["prefix" => "/product"], function () {
+        Route::get("/", [ProductController::class, 'index']);
+        Route::post("/", [ProductController::class, 'store']);
+        Route::get("/{product}", [ProductController::class, 'show']);
+        Route::post("/{product}", [ProductController::class, 'update']);
+        Route::delete("/{product}", [ProductController::class, 'destroy']);
+
+        Route::delete("/{product}/image", [ProductController::class, 'destroyImages']);
+    });
 });
