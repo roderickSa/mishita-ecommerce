@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerAddressController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -46,5 +48,19 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::delete("/{product}", [ProductController::class, 'destroy']);
 
         Route::delete("/{product}/image", [ProductController::class, 'destroyImages']);
+    });
+
+    Route::group(["prefix" => "/customer"], function () {
+        Route::get("/", [CustomerController::class, 'index']);
+        Route::get("/{user}", [CustomerController::class, 'show']);
+        Route::put("/{user}", [CustomerController::class, 'update']);
+    });
+
+    Route::group(["prefix" => "/customer_address"], function () {
+        Route::get("/", [CustomerAddressController::class, 'index']);
+        Route::get("/{user}", [CustomerAddressController::class, 'show']);
+        Route::post("/{user}", [CustomerAddressController::class, 'store']);
+        Route::put("/{customer_address}", [CustomerAddressController::class, 'update']);
+        Route::delete("/{customer_address}", [CustomerAddressController::class, 'destroy']);
     });
 });
