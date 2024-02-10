@@ -12,12 +12,17 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    const FULL_PRODUCTS_LIST = 'FULL_PRODUCTS_LIST';
+
     public function index(Request $request): JsonResource
     {
         $per_page = $request->per_page ?? 10;
@@ -30,6 +35,24 @@ class ProductController extends Controller
             ->paginate($per_page);
 
         return ProductListResource::collection($products);
+    }
+
+    public function fullproducts(Request $request)
+    {
+        $search = $request->search ?? "";
+
+        $search_products = Cache::remember(self::FULL_PRODUCTS_LIST, intval(Config('customvalues.REDIS_CACHE_TIME')), function () {
+            return DB::table("products")->get();
+        });
+
+        $products = $search_products->filter(function ($product) use ($search) {
+            if (strlen(trim($search)) > 0) {
+                return str_contains($product->title, $search);
+            }
+            return $product;
+        });
+
+        return response()->json(['data' => $products], Response::HTTP_OK);
     }
 
     /**

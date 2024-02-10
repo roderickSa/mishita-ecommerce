@@ -18,7 +18,9 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->unique()->word();
+        /* $name = fake()->unique()->word(); */
+
+        $name = $this->generateRandomString(12) . '_' . floor(microtime(true) * 1000);
 
         return [
             'title' => $name,
@@ -31,5 +33,16 @@ class ProductFactory extends Factory
             'created_by' => User::inRandomOrder()->first()->id,
             'updated_by' => User::inRandomOrder()->first()->id,
         ];
+    }
+
+    private function generateRandomString($length = 10)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }
