@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UserLoginRequest;
 use App\Http\Requests\Auth\UserRegisterRequest;
@@ -25,6 +26,8 @@ class UserAuthController extends Controller
         $access_token = $token_data->accessToken;
 
         $expires_in = $token_data->token->expires_at->diffInSeconds(Carbon::now());
+
+        event(new UserCreated($userRegisterRequest->email));
 
         return response()->json(["user" => $user, "token" => [
             "access_token" => $access_token,
