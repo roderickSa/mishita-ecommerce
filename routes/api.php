@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerAddressController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\MasiveMailController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -63,5 +64,9 @@ Route::group(["middleware" => "auth:api"], function () {
         Route::post("/{user}", [CustomerAddressController::class, 'store']);
         Route::put("/{customer_address}", [CustomerAddressController::class, 'update']);
         Route::delete("/{customer_address}", [CustomerAddressController::class, 'destroy']);
+    });
+
+    Route::group(['prefix' => '/email', 'middleware' => ['verify.superadmin']], function () {
+        Route::get("/masivemail", [MasiveMailController::class, 'masivemail']);
     });
 });
